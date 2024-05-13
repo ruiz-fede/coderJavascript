@@ -1,7 +1,3 @@
-let info = {};
-
-let consultas = [];
-
 const inputForm = document.getElementById('form');
 const resultsDiv = document.getElementById('results');
 
@@ -35,13 +31,37 @@ inputForm.addEventListener('submit', function(event) {
     const guardar = confirm("¿Quiere guardar esta consulta?");
     if (guardar) {
         const nombre = prompt("Ingrese un nombre para esta consulta");
-        const cargarConsulta = (nombre, capital, tasa, tiempo, intereses, total) => {
-            info = {nombre: nombre, capital: capital, tasa: tasa, tiempo: tiempo, intereses: intereses, total: total};
-        }; 
-        cargarConsulta(nombre, capitalValue, tasaValue, tiempoValue, intereses, total);
-        consultas.push(info);
-        alert("Su consulta fue guardada con exito");
-        console.log("Consulta:", info);
+        if (nombre) {
+            const consulta = {nombre: nombre, capital: capitalValue, tasa: tasaValue, tiempo: tiempoValue, intereses: intereses, total: total};
+            localStorage.setItem(nombre, JSON.stringify(consulta));
+            alert("Su consulta fue guardada con éxito en el almacenamiento local");
+        } else {
+            alert("Debe ingresar un nombre para guardar la consulta");
+        }
     };
+});
+
+function searchConsultationByName(keyword) {
+    const resultsDiv = document.getElementById('searchResults');
+    resultsDiv.innerHTML = '';
+
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const consulta = JSON.parse(localStorage.getItem(key));
+
+        if (key.includes(keyword)) {
+            const consultaString = `Nombre: ${consulta.nombre}, Capital: ${consulta.capital}, Tasa: ${consulta.tasa}, Tiempo: ${consulta.tiempo}, Intereses: ${consulta.intereses}, Total: ${consulta.total}`;
+            const consultaElement = document.createElement('p');
+            consultaElement.textContent = consultaString;
+            resultsDiv.appendChild(consultaElement);
+        }
+    }
+}
+
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', function() {
+    const searchTerm = searchInput.value.trim();
+    searchConsultationByName(searchTerm);
 });
 
