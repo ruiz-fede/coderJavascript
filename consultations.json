@@ -1,0 +1,11 @@
+[
+  {
+    "nombre": "consulta 1",
+    "capital": 200,
+    "tasa": 30,
+    "tiempo": 40,
+    "intereses": "6.58",
+    "total": "206.58",
+    "moneda": "pesos"
+  }
+]
