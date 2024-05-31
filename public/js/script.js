@@ -44,7 +44,7 @@ inputForm.addEventListener('submit', function(event) {
 
 function saveConsultation(nombre, capital, tasa, tiempo, intereses, total, moneda) {
     const consultation = { nombre, capital, tasa, tiempo, intereses, total, moneda };
-    fetch('http://localhost:3000/save', {  // Update the URL here
+    fetch('http://localhost:3000/save', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -60,28 +60,25 @@ function saveConsultation(nombre, capital, tasa, tiempo, intereses, total, moned
     });
 }
 
-// Select dropdown items
 const dropdownItems = document.querySelectorAll('.dropdown-item');
 
-// Attach event listeners to dropdown items
 dropdownItems.forEach(item => {
     item.addEventListener('click', function(event) {
         event.preventDefault();
-        const moneda = this.getAttribute('data-moneda'); // Get the value of 'data-moneda'
+        const moneda = this.getAttribute('data-moneda');
         console.log(`Selected Moneda: ${moneda}`);
-        showConsultasByMoneda(moneda); // Pass the selected Moneda to the function
+        showConsultasByMoneda(moneda);
     });
 });
 
 async function showConsultasByMoneda(moneda) {
     const searchTerm = moneda.toLowerCase();
     try {
-        const response = await fetch(`http://localhost:3000/search?keyword=${searchTerm}`);  // Update the URL here
+        const response = await fetch(`http://localhost:3000/search?keyword=${searchTerm}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log(data); // Log the data received from the server
         resultsDiv.innerHTML = '';
         data.forEach(consulta => {
             const consultaString = `Nombre: ${consulta.nombre}, Capital: ${consulta.capital}, Tasa: ${consulta.tasa}, Tiempo: ${consulta.tiempo}, Intereses: ${consulta.intereses}, Total: ${consulta.total}, Moneda: ${consulta.moneda}`;
